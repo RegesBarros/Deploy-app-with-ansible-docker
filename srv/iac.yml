@@ -1,0 +1,83 @@
+#Playbook configuracao completa 
+# By: Reges Barros - 02.07.21
+---
+- hosts: localhost
+  become: true
+  vars:
+    default_container_image: ubuntu
+
+  tasks:
+  - debug:
+      var: ansible_os_family
+  - name: "Criando repositório YUM para o docker"
+    yum_repository: 
+      name: docker-repo
+      description: "repositorio docker"
+      baseurl: "https://download.docker.com/linux/centos/8/x86_64/stable/"
+      enabled: yes
+      gpgcheck: no
+    when: ansible_facts['os_family'] == 'RedHat'
+  
+  - name: "Instalando o docker"
+    package:
+      name: "docker-ce-20.10.7-3.el8.x86_64"
+      state: present
+      
+  - name: "Instalando o pip"
+    package:
+      name: "python3-pip"
+      state: present
+      update_cache: true
+      
+  - name: "Instalando o docker sdk"
+    pip:
+      name: "docker"
+
+  - name: "Iniciando os servicos do docker"
+    service:
+      name: "docker"
+      state: started
+
+  - name: Pull default Docker image
+    docker_image:
+      name: "{{ default_container_image }}"
+      source: pull
+
+  - name: webpage directory
+    file:
+      state: directory
+      dest: "/root/webpage"
+        
+
+  - name: Pull httpd docker image
+    docker_image:
+      name: httpd
+      tag: latest
+      source: pull
+
+  - name: Copy website to the host
+    copy:
+      src: ./index.html
+      dest: /root/webpage
+      
+  - name: Run docker container
+    docker_container:
+      name: WebServer
+      image: httpd:latest
+      state: started
+      exposed_ports:
+      - "80"
+      ports:
+      - "80:80"
+      volumes:
+      - /root/webpage/:/usr/local/apache2/htdocs/
+ 
+  - name: "Rodando o prometheus"
+    command: "docker run -d -p 9090:9090 --name prometheus -v /srv/prometheus.yml prom/prometheus" 
+    
+  - name: Copiando arquivos daemon.json
+    copy: 
+      src: /srv/daemon.json
+      dest: /etc/docker/
+      mode: 0644
+
