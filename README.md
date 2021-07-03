@@ -5,15 +5,13 @@ In these projects a standalone server with CentOS 8 installed and ansible was us
 The tools used are in addition to those already mentioned, Prometheus for monitoring the environment. 
 
 The files are organized in the /srv directory for best use. The main file is "iac.yml", as the following tree image:
-.
-├── config.yml
-├── daemon.json
-├── iac.yml
-├── index.html
-└── prometheus.yml
+
+![image](https://user-images.githubusercontent.com/23237395/124341031-e8f35700-db8f-11eb-83ec-d41dfefc8d9a.png)
+
 
  From the /srv directory, just run the command: ansible-playbook iac.yml and the structure will be created.
- 
+ ![image](https://user-images.githubusercontent.com/23237395/124341129-b007b200-db90-11eb-9620-8e3eda5c56b1.png)
+
 
 To access the application, just put the ip of the virtual machine in the browser and the web application message "Hello World" will be displayed. The application is configured to access the default port, port 80.
 
@@ -21,7 +19,8 @@ To access the monitoring, open the browser and enter the ip of the virtual machi
 
 ![image](https://user-images.githubusercontent.com/23237395/124340975-931eaf00-db8f-11eb-97d0-ed8a69977942.png)
 
-  ![image](https://user-images.githubusercontent.com/23237395/124341004-ba757c00-db8f-11eb-9c8d-5b54010e4852.png)
+ Monitoring
+ ![image](https://user-images.githubusercontent.com/23237395/124341004-ba757c00-db8f-11eb-9c8d-5b54010e4852.png)
 
   
  
