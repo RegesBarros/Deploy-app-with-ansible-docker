@@ -21,6 +21,6 @@ To access the monitoring, open the browser and enter the ip of the virtual machi
 
 ![image](https://user-images.githubusercontent.com/23237395/124341004-ba757c00-db8f-11eb-9c8d-5b54010e4852.png)
 
-  
+ 
  
  
